@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+#  Notes - это приложение для создания заметок
 
-This project was bootstrapped with [Notes - это приложение для создания заметок](https://github.com/facebook/create-react-app).
+This project was bootstrapped with (https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
