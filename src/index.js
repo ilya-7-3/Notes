@@ -5,19 +5,43 @@ import SerchPanel from './components/serch-panel';
 import TodoList from './components/todo-list';
 import ItemStatusFilter from './components/item-status-filter';
 import AddPanel from './components/add-panel';
-
+import dataJson from './data.json';
 export default class App extends Component{
-  maxId = 100;
-  state = {
-    todoData : [
+
+componentDidMount(){
+  const text = localStorage.getItem("testsJSON");
+  if(text===null){
+    this.setState({
+      todoData:[
       this.createNewItems('Drink Coffee'),
       this.createNewItems('Drink Tea'),
       this.createNewItems('Have a lunch')
+    ]
+    });
+  }
+  else{
+  const obj = JSON.parse(text);
+  this.setState({
+    todoData:obj
+    })
+  }
+}
+componentDidUpdate(prevState){
+  if(this.state.todoData!==prevState.todoData){
+    const  myObj = [...this.state.todoData];
+    const myJSON = JSON.stringify(myObj);
+    localStorage.setItem("testsJSON", myJSON);
+  }
+}
+  maxId = 100;
+  state = {
+    todoData : [
     ],
     btnActive:'All',
     todoSearch:[],
     todoActive:[],
-    todoDone:[]
+    todoDone:[],
+    todoEdit:null
 
   }
   onDeleted = (id) =>{
@@ -164,7 +188,37 @@ onClickDone = (e) => {
   
 }
 
+onEdit = (id) => {
+  const arr = this.state.todoData.filter((el)=>{ 
+    if(el.id===id) {
+      return true;
+    }
+  });
+  this.setState({
+    todoEdit:arr
+    
+  }) 
+}
+editTodoList = (edit) => {
+ 
+    const arr = [...this.state.todoData];
+    const arr2 = [...edit];
+    arr.map((element,i)=>{
+      if(element.id===edit[0].id){
+        arr.slice(i,1,arr2[0]);
+      }
+    })
+    this.setState({
+      todoData:arr
+    });
+      
+    
+ 
+}
+
+
   render(){
+    console.log('111',this.state.todoEdit);
     const doneCount = this.state.todoData.filter((el)=>el.done);
     const {todoData,todoSearch,todoActive,todoDone} = this.state;
     const todoCount = todoData.length - doneCount.length;
@@ -205,9 +259,12 @@ onClickDone = (e) => {
       todoSearch={todoSearch}
       onDeleted={this.onDeleted}
       onToggleDone={this.onToggleDone}
-      onToggleImportant={this.onToggleImportant}/>
+      onToggleImportant={this.onToggleImportant}
+      onEdit={this.onEdit}/>
       <AddPanel
-      addItems={this.addItems}/>  
+      addItems={this.addItems}
+      todoEdit={this.state.todoEdit}
+      editTodoList={this.editTodoList}/>  
     </div>          
     )
   }

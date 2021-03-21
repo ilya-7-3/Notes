@@ -6,7 +6,7 @@ export default class TodoListItem extends Component{
     render(){
         const {label,onDeleted,
         onToggleDone,onToggleImportant,
-        done,important} = this.props;
+        done,important,onEdit} = this.props;
         let classNames = 'todo-list-item';
         if(done){
             classNames +=' done';
@@ -31,7 +31,12 @@ export default class TodoListItem extends Component{
                 {label}
                 
               </span>
-        
+              <button type="button"
+                      className="btn btn-outline-primary  float-right"
+                      onClick={onEdit}>
+                <i className="fa fa-pencil" />
+              </button>
+
               <button type="button"
                       className="btn btn-outline-success  float-right"
                       onClick={onToggleImportant}>

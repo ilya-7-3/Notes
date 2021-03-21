@@ -2,7 +2,7 @@ import React from 'react';
 import TodoListItem from './todo-list-item';
 import './todo-list.css';
 const TodoList = ({todos,onDeleted,todoSearch,
-  onToggleDone,onToggleImportant}) => {
+  onToggleDone,onToggleImportant,onEdit}) => {
     if(todoSearch.length!==0){
       todos=todoSearch;
       
@@ -15,7 +15,8 @@ const TodoList = ({todos,onDeleted,todoSearch,
             {...item}
             onDeleted={()=>onDeleted(item.id)}
             onToggleDone={()=>onToggleDone(item.id)}
-            onToggleImportant={()=>onToggleImportant(item.id)}/>
+            onToggleImportant={()=>onToggleImportant(item.id)}
+            onEdit={()=>onEdit(item.id,item.label)}/>
         </li>
         )
     })

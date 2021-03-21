@@ -2,8 +2,24 @@ import React, { Component } from 'react';
 import './add-panel.css';
 export default class AddPanel extends Component{
     state = {
-        label:''
+        label:'',
+        edit:null
+    }    
+    componentDidMount(){
+       
     }
+    componentDidUpdate(prevProps){
+        if(prevProps.todoEdit!==this.props.todoEdit){
+            const input = document.querySelectorAll('.form-control')[1];
+            input.value=this.props.todoEdit[0].label;
+            this.setState({
+                edit:this.props.todoEdit,
+                label:this.props.todoEdit[0].label
+            });
+        }
+    }
+    
+    
 
     onChangeLabel = (e) =>  {
         this.setState({
@@ -14,6 +30,16 @@ export default class AddPanel extends Component{
     onSubmit = (e) =>{
         e.preventDefault();
         if(this.state.label!==''){
+            if(this.state.edit!==null){
+                const arr = this.state.edit;
+                arr[0].label=this.state.label;
+                this.props.editTodoList(arr);
+                this.setState({
+                    label:'',
+                    edit:null
+                })
+                return ;
+            }
         this.props.addItems(this.state.label);
         this.setState({
             label:''
